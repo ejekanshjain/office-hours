@@ -1,4 +1,4 @@
-import { ShoppingBag } from 'lucide-react'
+import { BriefcaseBusiness } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import {
@@ -24,7 +24,7 @@ export default async function LoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
           <div className="bg-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
-            <ShoppingBag className="text-primary size-6" />
+            <BriefcaseBusiness className="text-primary size-6" />
           </div>
           <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
           <CardDescription className="text-muted-foreground text-sm">
