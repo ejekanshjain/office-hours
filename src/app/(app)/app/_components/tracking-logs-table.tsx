@@ -82,8 +82,16 @@ export function TrackingLogsTable() {
   )
 
   const filters = useMemo(
-    () =>
-      tagOptions?.length
+    () => [
+      {
+        id: 'type',
+        label: 'Type',
+        options: [
+          { label: 'Check in', value: 'check_in' },
+          { label: 'Check out', value: 'check_out' }
+        ]
+      },
+      ...(tagOptions?.length
         ? [
             {
               id: 'tag',
@@ -91,7 +99,8 @@ export function TrackingLogsTable() {
               options: tagOptions
             }
           ]
-        : [],
+        : [])
+    ],
     [tagOptions]
   )
 

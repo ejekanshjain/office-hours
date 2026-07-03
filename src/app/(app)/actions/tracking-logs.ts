@@ -1,6 +1,6 @@
 'use server'
 
-import { and, asc, desc, eq, sql } from 'drizzle-orm'
+import { and, asc, desc, eq, inArray, sql } from 'drizzle-orm'
 import { z } from 'zod'
 import { db } from '~/db'
 import { trackingLogsTable } from '~/db/schema'
@@ -26,18 +26,25 @@ export const getTrackingLogsAction = authActionClient
     })
   )
   .action(async ({ ctx, parsedInput }) => {
-    const tagFilter = parsedInput.filters?.tag?.[0]
-    const tag =
-      typeof tagFilter === 'string' && tagFilter.trim()
-        ? tagFilter.trim()
-        : null
+    const tagFilters = parsedInput.filters?.tag
+      ?.filter((value): value is string => typeof value === 'string')
+      .map(value => value.trim())
+      .filter(Boolean)
 
-    const where = tag
-      ? and(
-          eq(trackingLogsTable.userId, ctx.user.id),
-          eq(trackingLogsTable.tag, tag)
-        )
-      : eq(trackingLogsTable.userId, ctx.user.id)
+    const typeFilters = parsedInput.filters?.type?.filter(
+      (value): value is 'check_in' | 'check_out' =>
+        value === 'check_in' || value === 'check_out'
+    )
+
+    const where = and(
+      eq(trackingLogsTable.userId, ctx.user.id),
+      tagFilters?.length
+        ? inArray(trackingLogsTable.tag, tagFilters)
+        : sql`true`,
+      typeFilters?.length
+        ? inArray(trackingLogsTable.type, typeFilters)
+        : sql`true`
+    )
 
     const [countRow] = await db
       .select({ count: sql<number>`count(*)::int` })

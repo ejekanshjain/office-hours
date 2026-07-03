@@ -2,12 +2,22 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { KeyRound, Loader2, Trash2, UserCog } from 'lucide-react'
+import {
+  Check,
+  Copy,
+  KeyRound,
+  Loader2,
+  Pencil,
+  Plus,
+  Trash2,
+  UserCog
+} from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { PageHeading } from '~/components/page-heading'
+import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import {
   Card,
@@ -18,15 +28,16 @@ import {
 } from '~/components/ui/card'
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle
 } from '~/components/ui/dialog'
 import {
   Field,
   FieldContent,
-  FieldDescription,
   FieldError,
   FieldTitle
 } from '~/components/ui/field'
@@ -65,8 +76,10 @@ type ApiKeyListItem = {
 }
 
 export function ProfilePageClient({
+  apiBaseUrl,
   user
 }: {
+  apiBaseUrl: string
   user: {
     name: string
     email: string
@@ -74,7 +87,9 @@ export function ProfilePageClient({
 }) {
   const router = useRouter()
   const queryClient = useQueryClient()
+  const [createDialogOpen, setCreateDialogOpen] = useState(false)
   const [newApiKey, setNewApiKey] = useState<string | null>(null)
+  const [copiedSecret, setCopiedSecret] = useState(false)
   const [renamingKeyId, setRenamingKeyId] = useState<string | null>(null)
   const [busyKeyId, setBusyKeyId] = useState<string | null>(null)
   const [deletingAccount, setDeletingAccount] = useState(false)
@@ -137,8 +152,22 @@ export function ProfilePageClient({
     }
 
     setNewApiKey(data?.key ?? null)
+    setCopiedSecret(false)
+    setCreateDialogOpen(false)
     apiKeyForm.reset({ name: '' })
     await queryClient.invalidateQueries({ queryKey: ['profile-api-keys'] })
+  }
+
+  async function copySecretToClipboard() {
+    if (!newApiKey) return
+
+    try {
+      await navigator.clipboard.writeText(newApiKey)
+      setCopiedSecret(true)
+      toastSuccessMessage('API key copied')
+    } catch {
+      toastErrorMessage('Could not copy API key')
+    }
   }
 
   async function renameApiKey(keyId: string, name: string) {
@@ -269,66 +298,45 @@ export function ProfilePageClient({
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <KeyRound className="size-4" />
-            API keys
-          </CardTitle>
-          <CardDescription>
-            Create keys for iPhone, Samsung, or other automation routines.
-          </CardDescription>
+        <CardHeader className="items-start gap-3 sm:grid-cols-[1fr_auto]">
+          <div>
+            <CardTitle>API keys</CardTitle>
+            <CardDescription>
+              Create keys for iPhone, Samsung, or other automation routines.
+            </CardDescription>
+          </div>
+          <Button onClick={() => setCreateDialogOpen(true)}>
+            <Plus />
+            Create key
+          </Button>
         </CardHeader>
         <CardContent className="space-y-6">
-          <form
-            onSubmit={apiKeyForm.handleSubmit(createApiKey)}
-            className="grid gap-3 sm:grid-cols-[minmax(0,320px)_auto]"
-          >
-            <Field orientation="vertical">
-              <FieldContent>
-                <FieldTitle className="sr-only">API key name</FieldTitle>
-                <Input
-                  {...apiKeyForm.register('name')}
-                  placeholder="iPhone arrival automation"
-                  aria-invalid={!!apiKeyForm.formState.errors.name}
-                />
-                <FieldDescription>
-                  Name keys by device or automation.
-                </FieldDescription>
-                <FieldError errors={[apiKeyForm.formState.errors.name]} />
-              </FieldContent>
-            </Field>
-            <Button
-              type="submit"
-              disabled={apiKeyForm.formState.isSubmitting}
-              className="sm:self-start"
-            >
-              {apiKeyForm.formState.isSubmitting ? (
-                <Loader2 className="animate-spin" />
-              ) : null}
-              Create key
-            </Button>
-          </form>
-
           <div className="overflow-hidden rounded-lg border">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Name</TableHead>
+                  <TableHead>Status</TableHead>
                   <TableHead>Prefix</TableHead>
                   <TableHead>Created</TableHead>
                   <TableHead>Last used</TableHead>
-                  <TableHead className="w-56 text-right">Actions</TableHead>
+                  <TableHead className="w-48 text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {apiKeysPending ? (
                   <TableRow>
-                    <TableCell colSpan={5}>Loading API keys...</TableCell>
+                    <TableCell
+                      colSpan={6}
+                      className="text-muted-foreground h-24 text-center"
+                    >
+                      Loading API keys...
+                    </TableCell>
                   </TableRow>
                 ) : apiKeys?.length ? (
                   apiKeys.map(item => (
                     <TableRow key={item.id}>
-                      <TableCell>
+                      <TableCell className="min-w-64">
                         {renamingKeyId === item.id ? (
                           <RenameApiKeyForm
                             defaultName={item.name ?? ''}
@@ -337,10 +345,33 @@ export function ProfilePageClient({
                             onSave={name => renameApiKey(item.id, name)}
                           />
                         ) : (
-                          item.name || 'Untitled key'
+                          <div className="flex min-w-0 items-center gap-2">
+                            <div className="bg-primary/10 text-primary flex size-8 shrink-0 items-center justify-center rounded-md">
+                              <KeyRound className="size-4" />
+                            </div>
+                            <div className="min-w-0">
+                              <p className="truncate text-sm font-medium">
+                                {item.name || 'Untitled key'}
+                              </p>
+                              <p className="text-muted-foreground text-xs">
+                                Secret hidden after creation
+                              </p>
+                            </div>
+                          </div>
                         )}
                       </TableCell>
-                      <TableCell>{item.prefix || '—'}</TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={
+                            item.enabled === false ? 'destructive' : 'secondary'
+                          }
+                        >
+                          {item.enabled === false ? 'Disabled' : 'Active'}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="font-mono text-sm">
+                        {item.prefix || '—'}
+                      </TableCell>
                       <TableCell>{formatDate(item.createdAt)}</TableCell>
                       <TableCell>
                         {item.lastRequest
@@ -353,9 +384,12 @@ export function ProfilePageClient({
                             type="button"
                             variant="outline"
                             size="sm"
-                            disabled={busyKeyId === item.id}
+                            disabled={
+                              busyKeyId === item.id || renamingKeyId === item.id
+                            }
                             onClick={() => setRenamingKeyId(item.id)}
                           >
+                            <Pencil />
                             Rename
                           </Button>
                           <Button
@@ -365,6 +399,11 @@ export function ProfilePageClient({
                             disabled={busyKeyId === item.id}
                             onClick={() => deleteApiKey(item.id)}
                           >
+                            {busyKeyId === item.id ? (
+                              <Loader2 className="animate-spin" />
+                            ) : (
+                              <Trash2 />
+                            )}
                             Delete
                           </Button>
                         </div>
@@ -373,7 +412,10 @@ export function ProfilePageClient({
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={5}>
+                    <TableCell
+                      colSpan={6}
+                      className="text-muted-foreground h-32 text-center"
+                    >
                       No API keys yet. Create one to connect a device
                       automation.
                     </TableCell>
@@ -382,8 +424,57 @@ export function ProfilePageClient({
               </TableBody>
             </Table>
           </div>
+
+          <ApiUsageInstructions apiBaseUrl={apiBaseUrl} />
         </CardContent>
       </Card>
+
+      <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create API key</DialogTitle>
+            <DialogDescription>
+              Name this key by device or automation so you can identify it
+              later.
+            </DialogDescription>
+          </DialogHeader>
+          <form
+            onSubmit={apiKeyForm.handleSubmit(createApiKey)}
+            className="space-y-6"
+          >
+            <Field orientation="vertical">
+              <FieldContent>
+                <FieldTitle>Name</FieldTitle>
+                <Input
+                  {...apiKeyForm.register('name')}
+                  placeholder="iPhone arrival automation"
+                  autoFocus
+                  aria-invalid={!!apiKeyForm.formState.errors.name}
+                />
+                <FieldError errors={[apiKeyForm.formState.errors.name]} />
+              </FieldContent>
+            </Field>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button type="button" variant="outline">
+                  Cancel
+                </Button>
+              </DialogClose>
+              <Button
+                type="submit"
+                disabled={apiKeyForm.formState.isSubmitting}
+              >
+                {apiKeyForm.formState.isSubmitting ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <Plus />
+                )}
+                Create key
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={!!newApiKey} onOpenChange={() => setNewApiKey(null)}>
         <DialogContent>
@@ -396,8 +487,80 @@ export function ProfilePageClient({
           <div className="bg-muted overflow-x-auto rounded-md p-3 font-mono text-sm">
             {newApiKey}
           </div>
+          <DialogFooter>
+            <Button type="button" onClick={copySecretToClipboard}>
+              {copiedSecret ? <Check /> : <Copy />}
+              {copiedSecret ? 'Copied' : 'Copy key'}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
+    </div>
+  )
+}
+
+function ApiUsageInstructions({ apiBaseUrl }: { apiBaseUrl: string }) {
+  const endpoint = `${apiBaseUrl.replace(/\/$/, '')}/api/track`
+
+  return (
+    <div className="space-y-4 rounded-lg border p-4">
+      <div>
+        <h3 className="text-sm font-semibold">Tracking API</h3>
+        <p className="text-muted-foreground mt-1 text-sm">
+          Use this endpoint from phone automations when arriving at or leaving
+          the office.
+        </p>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div className="space-y-3">
+          <InstructionRow label="Method" value="POST" />
+          <InstructionRow label="Endpoint" value={endpoint} />
+          <InstructionRow label="Header" value="x-api-key: YOUR_API_KEY" />
+          <InstructionRow
+            label="Header"
+            value="content-type: application/json"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <p className="text-muted-foreground text-xs font-medium uppercase">
+            Body
+          </p>
+          <pre className="bg-muted overflow-x-auto rounded-md p-3 text-xs">
+            <code>{`{
+  "type": "check_in",
+  "tag": "office"
+}`}</code>
+          </pre>
+          <p className="text-muted-foreground text-xs">
+            `type` must be `check_in` or `check_out`. `tag` is optional.
+          </p>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <p className="text-muted-foreground text-xs font-medium uppercase">
+          cURL
+        </p>
+        <pre className="bg-muted overflow-x-auto rounded-md p-3 text-xs">
+          <code>{`curl -X POST ${endpoint} \\
+  -H "x-api-key: YOUR_API_KEY" \\
+  -H "content-type: application/json" \\
+  -d '{"type":"check_in","tag":"office"}'`}</code>
+        </pre>
+      </div>
+    </div>
+  )
+}
+
+function InstructionRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="grid gap-1 sm:grid-cols-[96px_1fr] sm:items-center">
+      <p className="text-muted-foreground text-xs font-medium uppercase">
+        {label}
+      </p>
+      <code className="bg-muted rounded px-2 py-1 text-xs">{value}</code>
     </div>
   )
 }

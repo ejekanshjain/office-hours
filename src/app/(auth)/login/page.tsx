@@ -29,7 +29,7 @@ export default async function LoginPage({
   const callbackUrl = sanitizeCallback(resolvedParams.callbackUrl) ?? '/app'
   const authSession = await getAuthSession()
 
-  if (authSession) redirect(callbackUrl)
+  if (authSession) return redirect(callbackUrl)
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
