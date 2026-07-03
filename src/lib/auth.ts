@@ -36,6 +36,11 @@ export const auth = betterAuth({
       enabled: true
     }
   },
+  user: {
+    deleteUser: {
+      enabled: true
+    }
+  },
   advanced: {
     database: {
       generateId: ({ model }) => `${model}_${createId()}`
