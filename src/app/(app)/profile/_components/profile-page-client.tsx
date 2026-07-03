@@ -9,11 +9,13 @@ import {
   Loader2,
   Pencil,
   Plus,
+  Settings,
+  Smartphone,
   Trash2,
   UserCog
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useState, type FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { PageHeading } from '~/components/page-heading'
@@ -503,53 +505,135 @@ function ApiUsageInstructions({ apiBaseUrl }: { apiBaseUrl: string }) {
   const endpoint = `${apiBaseUrl.replace(/\/$/, '')}/api/track`
 
   return (
-    <div className="space-y-4 rounded-lg border p-4">
-      <div>
-        <h3 className="text-sm font-semibold">Tracking API</h3>
-        <p className="text-muted-foreground mt-1 text-sm">
-          Use this endpoint from phone automations when arriving at or leaving
-          the office.
-        </p>
-      </div>
+    <div className="space-y-4">
+      <div className="space-y-4 rounded-lg border p-4">
+        <div>
+          <h3 className="text-sm font-semibold">Tracking API</h3>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Use this endpoint from phone automations when arriving at or leaving
+            the office.
+          </p>
+        </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <div className="space-y-3">
-          <InstructionRow label="Method" value="POST" />
-          <InstructionRow label="Endpoint" value={endpoint} />
-          <InstructionRow label="Header" value="x-api-key: YOUR_API_KEY" />
-          <InstructionRow
-            label="Header"
-            value="content-type: application/json"
-          />
+        <div className="grid gap-4 lg:grid-cols-2">
+          <div className="space-y-3">
+            <InstructionRow label="Method" value="POST" />
+            <InstructionRow label="Endpoint" value={endpoint} />
+            <InstructionRow label="Header" value="x-api-key: YOUR_API_KEY" />
+            <InstructionRow
+              label="Header"
+              value="content-type: application/json"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <p className="text-muted-foreground text-xs font-medium uppercase">
+              Body
+            </p>
+            <pre className="bg-muted overflow-x-auto rounded-md p-3 text-xs">
+              <code>{`{
+  "type": "check_in",
+  "tag": "office"
+}`}</code>
+            </pre>
+            <p className="text-muted-foreground text-xs">
+              `type` must be `check_in` or `check_out`. `tag` is optional.
+            </p>
+          </div>
         </div>
 
         <div className="space-y-2">
           <p className="text-muted-foreground text-xs font-medium uppercase">
-            Body
+            cURL
           </p>
           <pre className="bg-muted overflow-x-auto rounded-md p-3 text-xs">
-            <code>{`{
-  "type": "check_in",
-  "tag": "office"
-}`}</code>
-          </pre>
-          <p className="text-muted-foreground text-xs">
-            `type` must be `check_in` or `check_out`. `tag` is optional.
-          </p>
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <p className="text-muted-foreground text-xs font-medium uppercase">
-          cURL
-        </p>
-        <pre className="bg-muted overflow-x-auto rounded-md p-3 text-xs">
-          <code>{`curl -X POST ${endpoint} \\
+            <code>{`curl -X POST ${endpoint} \\
   -H "x-api-key: YOUR_API_KEY" \\
   -H "content-type: application/json" \\
   -d '{"type":"check_in","tag":"office"}'`}</code>
-        </pre>
+          </pre>
+        </div>
       </div>
+
+      <AutomationSetupGuide endpoint={endpoint} />
+    </div>
+  )
+}
+
+function AutomationSetupGuide({ endpoint }: { endpoint: string }) {
+  return (
+    <div className="space-y-4 rounded-lg border p-4">
+      <div>
+        <h3 className="text-sm font-semibold">Phone automation setup</h3>
+        <p className="text-muted-foreground mt-1 text-sm">
+          Create one arrival automation with `check_in`, then duplicate it for
+          leaving with `check_out`.
+        </p>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <AutomationCard
+          title="Apple Shortcuts"
+          icon={Smartphone}
+          steps={[
+            'Open Shortcuts, go to Automation, and create a new personal automation.',
+            'Choose Arrive, select your office location, and set it to run immediately.',
+            'Add Get Contents of URL, paste the endpoint, and set Method to POST.',
+            'Add headers: x-api-key with your API key, and content-type as application/json.',
+            'Set the JSON body to {"type":"check_in","tag":"office"}.',
+            'Create a second automation for Leave and change type to check_out.'
+          ]}
+        />
+
+        <AutomationCard
+          title="Samsung Modes and Routines"
+          icon={Settings}
+          steps={[
+            'Open Modes and Routines, create a new routine, and choose Place as the condition.',
+            'Pick Arriving at your office location for check-in.',
+            'Use an HTTP request action if available on your phone.',
+            'If custom POST headers are not available, trigger a helper such as Tasker or HTTP Request Shortcuts from the routine.',
+            'Send POST to the endpoint with x-api-key, content-type, and the check_in JSON body.',
+            'Duplicate the routine for Leaving and change type to check_out.'
+          ]}
+        />
+      </div>
+
+      <div className="bg-muted rounded-md p-3 text-xs">
+        <p className="font-medium">Endpoint</p>
+        <code className="mt-1 block overflow-x-auto">{endpoint}</code>
+      </div>
+    </div>
+  )
+}
+
+function AutomationCard({
+  title,
+  icon: Icon,
+  steps
+}: {
+  title: string
+  icon: FC<{ className?: string }>
+  steps: string[]
+}) {
+  return (
+    <div className="rounded-md border p-4">
+      <div className="mb-4 flex items-center gap-2">
+        <span className="bg-primary/10 text-primary flex size-8 items-center justify-center rounded-md">
+          <Icon className="size-4" />
+        </span>
+        <h4 className="text-sm font-semibold">{title}</h4>
+      </div>
+      <ol className="space-y-3">
+        {steps.map((step, index) => (
+          <li key={step} className="flex gap-3 text-sm">
+            <span className="bg-muted flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-medium">
+              {index + 1}
+            </span>
+            <span className="text-muted-foreground">{step}</span>
+          </li>
+        ))}
+      </ol>
     </div>
   )
 }
