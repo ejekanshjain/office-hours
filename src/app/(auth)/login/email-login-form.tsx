@@ -20,7 +20,11 @@ const emailLoginFormSchema = z.object({
   email: z.email()
 })
 
-export const EmailLoginForm = () => {
+export const EmailLoginForm = ({
+  callbackUrl = '/app'
+}: {
+  callbackUrl?: string | null
+}) => {
   const form = useForm<z.infer<typeof emailLoginFormSchema>>({
     resolver: zodResolver(emailLoginFormSchema),
     defaultValues: {
@@ -40,7 +44,8 @@ export const EmailLoginForm = () => {
     try {
       const res = await signIn.magicLink({
         email,
-        name: ''
+        name: '',
+        callbackURL: callbackUrl || '/app'
       })
       if (res?.error) throw res.error
       setIsSent(email)

@@ -3,7 +3,11 @@
 import { Button } from '~/components/ui/button'
 import { getLastUsedLoginMethod, signIn } from '~/lib/auth-client'
 
-export const SocialLoginButtons = () => {
+export const SocialLoginButtons = ({
+  callbackUrl = '/app'
+}: {
+  callbackUrl?: string | null
+}) => {
   const lastUsedLoginMethod = getLastUsedLoginMethod()
 
   return (
@@ -12,7 +16,8 @@ export const SocialLoginButtons = () => {
         variant="outline"
         onClick={async () => {
           await signIn.social({
-            provider: 'google'
+            provider: 'google',
+            callbackURL: callbackUrl || '/app'
           })
         }}
       >
@@ -49,7 +54,8 @@ export const SocialLoginButtons = () => {
         variant="outline"
         onClick={async () => {
           await signIn.social({
-            provider: 'github'
+            provider: 'github',
+            callbackURL: callbackUrl || '/app'
           })
         }}
       >

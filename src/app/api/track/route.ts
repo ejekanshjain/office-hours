@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     request.headers.get('authorization')?.replace(/^Bearer\s+/i, '')
 
   if (!key) {
-    return NextResponse.json({ error: 'Missing API key', }, { status: 401 })
+    return NextResponse.json({ error: 'Missing API key' }, { status: 401 })
   }
 
   const verified = await auth.api.verifyApiKey({
@@ -52,5 +52,8 @@ export async function POST(request: Request) {
       timestamp: trackingLogsTable.timestamp
     })
 
-  return NextResponse.json({ log, message: 'Tracking log created successfully' }, { status: 201 })
+  return NextResponse.json(
+    { log, message: 'Tracking log created successfully' },
+    { status: 201 }
+  )
 }

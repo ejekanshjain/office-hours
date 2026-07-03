@@ -14,10 +14,22 @@ import { getAuthSession } from '~/lib/auth'
 import { EmailLoginForm } from './email-login-form'
 import { SocialLoginButtons } from './social-login-buttons'
 
-export default async function LoginPage() {
+function sanitizeCallback(value: string | string[] | undefined) {
+  if (typeof value !== 'string') return null
+  if (!value.startsWith('/') || value.startsWith('//')) return null
+  return value
+}
+
+export default async function LoginPage({
+  searchParams
+}: {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>
+}) {
+  const resolvedParams = (await searchParams) ?? {}
+  const callbackUrl = sanitizeCallback(resolvedParams.callbackUrl) ?? '/app'
   const authSession = await getAuthSession()
 
-  if (authSession) redirect('/')
+  if (authSession) redirect(callbackUrl)
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
@@ -40,7 +52,7 @@ export default async function LoginPage() {
             </p>
           </div>
 
-          <EmailLoginForm />
+          <EmailLoginForm callbackUrl={callbackUrl} />
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
@@ -53,7 +65,7 @@ export default async function LoginPage() {
             </div>
           </div>
 
-          <SocialLoginButtons />
+          <SocialLoginButtons callbackUrl={callbackUrl} />
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
           <Separator className="my-2" />
