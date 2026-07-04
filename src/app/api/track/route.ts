@@ -43,6 +43,7 @@ export async function POST(request: Request) {
       userId: verified.key.referenceId,
       type: parsed.data.type,
       tag: cleanTag(parsed.data.tag),
+      source: 'api',
       timestamp: new Date()
     })
     .returning({

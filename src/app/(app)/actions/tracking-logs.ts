@@ -32,11 +32,19 @@ const getTrackingLogsWhere = (
       value === 'check_in' || value === 'check_out'
   )
 
+  const sourceFilters = filters?.source?.filter(
+    (value): value is 'manual' | 'api' =>
+      value === 'manual' || value === 'api'
+  )
+
   return and(
     eq(trackingLogsTable.userId, userId),
     tagFilters?.length ? inArray(trackingLogsTable.tag, tagFilters) : sql`true`,
     typeFilters?.length
       ? inArray(trackingLogsTable.type, typeFilters)
+      : sql`true`,
+    sourceFilters?.length
+      ? inArray(trackingLogsTable.source, sourceFilters)
       : sql`true`
   )
 }
@@ -75,6 +83,7 @@ export const getTrackingLogsAction = authActionClient
         id: trackingLogsTable.id,
         tag: trackingLogsTable.tag,
         type: trackingLogsTable.type,
+        source: trackingLogsTable.source,
         timestamp: trackingLogsTable.timestamp
       })
       .from(trackingLogsTable)
@@ -106,6 +115,7 @@ export const exportTrackingLogsCsvAction = authActionClient
         id: trackingLogsTable.id,
         tag: trackingLogsTable.tag,
         type: trackingLogsTable.type,
+        source: trackingLogsTable.source,
         timestamp: trackingLogsTable.timestamp
       })
       .from(trackingLogsTable)
@@ -117,12 +127,13 @@ export const exportTrackingLogsCsvAction = authActionClient
       )
       .limit(EXPORT_LIMIT)
 
-    const header = ['id', 'type', 'tag', 'timestamp']
+    const header = ['id', 'type', 'tag', 'source', 'timestamp']
     const csvRows = rows.map(row =>
       [
         row.id,
         row.type,
         row.tag,
+        row.source,
         row.timestamp instanceof Date
           ? row.timestamp.toISOString()
           : new Date(row.timestamp).toISOString()
@@ -168,12 +179,14 @@ export const createTrackingLogAction = authActionClient
         userId: ctx.user.id,
         type: parsedInput.type,
         tag: cleanTag(parsedInput.tag),
+        source: 'manual',
         timestamp: new Date()
       })
       .returning({
         id: trackingLogsTable.id,
         tag: trackingLogsTable.tag,
         type: trackingLogsTable.type,
+        source: trackingLogsTable.source,
         timestamp: trackingLogsTable.timestamp
       })
 

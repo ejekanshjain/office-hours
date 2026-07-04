@@ -29,6 +29,7 @@ type TrackingLog = {
   id: string
   tag: string | null
   type: 'check_in' | 'check_out'
+  source: 'manual' | 'api'
   timestamp: Date
 }
 
@@ -50,6 +51,18 @@ const columns: ColumnDef<TrackingLog>[] = [
     header: 'Tag',
     enableSorting: false,
     cell: ({ row }) => row.original.tag || '—'
+  },
+  {
+    accessorKey: 'source',
+    header: 'Source',
+    enableSorting: false,
+    cell: ({ row }) => (
+      <Badge
+        variant="outline"
+      >
+        {row.original.source === 'api' ? 'API' : 'Manual'}
+      </Badge>
+    )
   },
   {
     accessorKey: 'timestamp',
@@ -127,6 +140,14 @@ export function TrackingLogsTable() {
         options: [
           { label: 'Check in', value: 'check_in' },
           { label: 'Check out', value: 'check_out' }
+        ]
+      },
+      {
+        id: 'source',
+        label: 'Source',
+        options: [
+          { label: 'Manual', value: 'manual' },
+          { label: 'API', value: 'api' }
         ]
       },
       ...(tagOptions?.length

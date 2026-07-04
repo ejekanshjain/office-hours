@@ -9,11 +9,6 @@ import {
 } from 'drizzle-orm/pg-core'
 import { commonFieldDefs } from './common'
 
-export const trackingLogTypeEnum = pgEnum('tracking_log_type', [
-  'check_in',
-  'check_out'
-])
-
 export const usersTable = pgTable('users', {
   id: commonFieldDefs.id('user'),
   email: text('email').notNull().unique(),
@@ -109,6 +104,15 @@ export const apikeysTable = pgTable(
   ]
 )
 
+export const trackingLogTypeEnum = pgEnum('tracking_log_type', [
+  'check_in',
+  'check_out'
+])
+export const trackingLogSourceEnum = pgEnum('tracking_log_source', [
+  'manual',
+  'api'
+])
+
 export const trackingLogsTable = pgTable(
   'tracking_logs',
   {
@@ -118,6 +122,7 @@ export const trackingLogsTable = pgTable(
       .references(() => usersTable.id, { onDelete: 'cascade' }),
     tag: text('tag'),
     type: trackingLogTypeEnum('type').notNull(),
+    source: trackingLogSourceEnum('source').notNull().default('manual'),
     timestamp: commonFieldDefs.date('timestamp').notNull().defaultNow()
   },
   table => [
