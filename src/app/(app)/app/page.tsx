@@ -9,6 +9,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import type { FC } from 'react'
+import { LocalizedDateTime } from '~/components/localized-date-time'
 import { PageHeading } from '~/components/page-heading'
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
@@ -30,7 +31,6 @@ import {
 import { db } from '~/db'
 import { trackingLogsTable } from '~/db/schema'
 import { getAuthSession } from '~/lib/auth'
-import { formatDate } from '~/lib/format-date'
 
 export default async function Page() {
   const authSession = await getAuthSession()
@@ -149,7 +149,10 @@ export default async function Page() {
                       </TableCell>
                       <TableCell>{log.tag || '—'}</TableCell>
                       <TableCell className="text-muted-foreground text-right">
-                        {formatDate(log.timestamp, { time: true })}
+                        <LocalizedDateTime
+                          date={log.timestamp}
+                          options={{ time: true }}
+                        />
                       </TableCell>
                     </TableRow>
                   ))}
