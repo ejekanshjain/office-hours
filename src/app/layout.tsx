@@ -2,10 +2,8 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Loader } from '~/components/loader'
 import { ReactQueryProvider } from '~/components/react-query-provider'
-import { ScreenSize } from '~/components/screen-size'
 import { ThemeProvider } from '~/components/theme-provider'
 import { Toaster } from '~/components/ui/sonner'
-import { env } from '~/env'
 import { siteConfig } from '~/lib/siteConfig'
 import './globals.css'
 
@@ -40,7 +38,6 @@ export default function RootLayout({
           <ThemeProvider>
             <Loader />
             {children}
-            {env.APP_ENV === 'development' ? <ScreenSize /> : null}
             <Toaster />
           </ThemeProvider>
         </ReactQueryProvider>

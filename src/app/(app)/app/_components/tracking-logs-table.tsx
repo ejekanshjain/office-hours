@@ -12,9 +12,9 @@ import { useMemo } from 'react'
 import { toast } from 'sonner'
 import { DataTable } from '~/components/data-table'
 import { SortOrderEnum } from '~/components/data-table/enum'
+import { LocalizedDateTime } from '~/components/localized-date-time'
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
-import { formatDate } from '~/lib/format-date'
 import {
   useSafeActionMutation,
   useSafeActionQuery
@@ -54,7 +54,12 @@ const columns: ColumnDef<TrackingLog>[] = [
   {
     accessorKey: 'timestamp',
     header: 'Timestamp',
-    cell: ({ row }) => formatDate(row.original.timestamp, { time: true })
+    cell: ({ row }) => (
+      <LocalizedDateTime
+        date={row.original.timestamp}
+        options={{ time: true }}
+      />
+    )
   }
 ]
 

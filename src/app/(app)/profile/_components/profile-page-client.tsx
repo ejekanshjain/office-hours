@@ -5,6 +5,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   Check,
   Copy,
+  ExternalLink,
   KeyRound,
   Loader2,
   Pencil,
@@ -586,15 +587,29 @@ function AutomationSetupGuide({ endpoint }: { endpoint: string }) {
         />
 
         <AutomationCard
-          title="Samsung Modes and Routines"
+          title="Samsung (Routines + HTTP Shortcuts)"
           icon={Settings}
           steps={[
-            'Open Modes and Routines, create a new routine, and choose Place as the condition.',
-            'Pick Arriving at your office location for check-in.',
-            'Use an HTTP request action if available on your phone.',
-            'If custom POST headers are not available, trigger a helper such as Tasker or HTTP Request Shortcuts from the routine.',
-            'Send POST to the endpoint with x-api-key, content-type, and the check_in JSON body.',
-            'Duplicate the routine for Leaving and change type to check_out.'
+            <span key="install">
+              Install{' '}
+              <a
+                href="https://play.google.com/store/apps/details?id=ch.rmy.android.http_shortcuts"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary inline-flex items-center gap-1 font-medium underline underline-offset-2"
+              >
+                HTTP Shortcuts
+                <ExternalLink className="inline size-3" />
+              </a>{' '}
+              from the Play Store.
+            </span>,
+            'Open HTTP Shortcuts, tap +, and create a new shortcut named "Check In".',
+            'Set Method to POST, paste the endpoint URL, and add headers: x-api-key with your API key and content-type as application/json.',
+            'Set the request body to {"type":"check_in","tag":"office"} and save the shortcut.',
+            'Create a second shortcut named "Check Out" with the same setup but change type to check_out.',
+            'Open Samsung Modes and Routines, create a new routine, and choose Location as the condition.',
+            'Select Arriving at your office location, then add the action "Open an app or a page" and choose the "Check In" shortcut from HTTP Shortcuts.',
+            'Create a second routine for Leaving and link it to the "Check Out" shortcut.'
           ]}
         />
       </div>
@@ -614,7 +629,7 @@ function AutomationCard({
 }: {
   title: string
   icon: FC<{ className?: string }>
-  steps: string[]
+  steps: React.ReactNode[]
 }) {
   return (
     <div className="rounded-md border p-4">
@@ -626,7 +641,7 @@ function AutomationCard({
       </div>
       <ol className="space-y-3">
         {steps.map((step, index) => (
-          <li key={step} className="flex gap-3 text-sm">
+          <li key={index} className="flex gap-3 text-sm">
             <span className="bg-muted flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-medium">
               {index + 1}
             </span>
