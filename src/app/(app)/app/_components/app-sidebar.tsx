@@ -12,7 +12,7 @@ export function AppSidebar() {
       header={
         <Link
           href="/app"
-          className="flex h-10 items-center gap-2 px-2 text-sm font-semibold transition-opacity hover:opacity-80 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
+          className="flex h-10 items-center gap-2 px-2 text-sm font-semibold transition-opacity group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 hover:opacity-80"
         >
           <div className="bg-primary/10 flex size-8 shrink-0 items-center justify-center rounded-full">
             <BriefcaseBusiness className="text-primary size-4" />

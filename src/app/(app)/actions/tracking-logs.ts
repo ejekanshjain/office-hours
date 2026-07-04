@@ -33,8 +33,7 @@ const getTrackingLogsWhere = (
   )
 
   const sourceFilters = filters?.source?.filter(
-    (value): value is 'manual' | 'api' =>
-      value === 'manual' || value === 'api'
+    (value): value is 'manual' | 'api' => value === 'manual' || value === 'api'
   )
 
   return and(

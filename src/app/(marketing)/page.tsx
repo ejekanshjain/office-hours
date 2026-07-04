@@ -53,70 +53,74 @@ const recentRows = [
 
 export default async function HomePage() {
   return (
-    <div className="overflow-hidden">
-      <section
-        id="product"
-        className="dark:bg-background relative bg-white"
-      >
+    <div className="bg-background text-foreground selection:bg-primary selection:text-primary-foreground overflow-hidden">
+      <section id="product" className="border-foreground relative border-b-4">
         <MapLayer />
 
-        <div className="relative mx-auto grid w-full max-w-[1416px] gap-16 px-6 pt-20 pb-20 lg:grid-cols-[620px_minmax(0,1fr)] lg:items-start lg:px-0 lg:pt-28 lg:pb-16">
-          <div className="max-w-[610px] space-y-8 lg:pl-11">
+        <div className="relative mx-auto grid w-full max-w-[1416px] gap-16 px-6 pt-24 pb-24 lg:grid-cols-[620px_minmax(0,1fr)] lg:items-start lg:px-12 lg:pt-32 lg:pb-24">
+          <div className="max-w-[610px] space-y-10 lg:pl-11">
             <div className="space-y-6">
-              <h1 className="max-w-[548px] text-5xl leading-[1.08] font-black tracking-tight text-slate-950 sm:text-6xl lg:text-[56px] dark:text-white">
-                Office time tracking that{' '}
-                <span className="text-primary">starts</span> when you arrive
-                <span className="text-primary">.</span>
+              <div className="border-foreground bg-primary text-primary-foreground inline-block border-2 px-3 py-1 font-bold tracking-widest uppercase shadow-[4px_4px_0_0_var(--color-foreground)]">
+                Time Tracking Protocol v1.0
+              </div>
+              <h1 className="max-w-[548px] text-6xl leading-[1.0] font-black tracking-tight uppercase sm:text-7xl lg:text-[72px]">
+                OFFICE TIME TRACKING THAT{' '}
+                <span className="bg-primary text-primary-foreground px-2">
+                  STARTS
+                </span>{' '}
+                WHEN YOU ARRIVE.
               </h1>
-              <p className="max-w-[520px] text-lg leading-8 text-slate-500 dark:text-slate-400">
+              <p className="border-foreground max-w-[520px] border-l-4 pl-4 text-xl leading-8 font-medium">
                 Connect your phone automations using an API key. Check in when
                 you arrive, check out when you leave, and keep clean, searchable
                 logs of your office time.
               </p>
             </div>
 
-            <div className="flex flex-col gap-4 sm:flex-row">
+            <div className="flex flex-col gap-6 sm:flex-row">
               <Button
                 asChild
                 size="lg"
-                className="shadow-primary/20 h-12 rounded-full px-8 text-sm shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
+                className="border-foreground bg-primary text-primary-foreground h-16 rounded-none border-4 px-10 text-lg font-bold tracking-wider uppercase shadow-[8px_8px_0_0_var(--color-foreground)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[6px_6px_0_0_var(--color-foreground)] active:translate-x-[8px] active:translate-y-[8px] active:shadow-none"
               >
                 <Link href="/login">
-                  Start tracking
-                  <ArrowRight className="size-4" />
+                  START TRACKING
+                  <ArrowRight className="ml-2 size-6 stroke-[3]" />
                 </Link>
               </Button>
               <Button
                 asChild
                 variant="outline"
                 size="lg"
-                className="h-12 rounded-full px-8 text-sm transition-all duration-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                className="border-foreground bg-background h-16 rounded-none border-4 px-10 text-lg font-bold tracking-wider uppercase shadow-[8px_8px_0_0_var(--color-foreground)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[6px_6px_0_0_var(--color-foreground)] active:translate-x-[8px] active:translate-y-[8px] active:shadow-none"
               >
-                <Link href="/privacy">View privacy</Link>
+                <Link href="/privacy">VIEW PRIVACY</Link>
               </Button>
             </div>
 
-            <div className="grid max-w-[610px] gap-8 border-t border-slate-100 pt-8 sm:grid-cols-3 dark:border-slate-800">
+            <div className="border-foreground grid max-w-[610px] gap-6 border-t-4 pt-10 sm:grid-cols-3">
               <ProofPoint
                 icon={MapPin}
-                title="Location triggered"
+                title="LOCATION TRIGGERED"
                 description="Automatically check in and out based on where you are."
+                color="bg-secondary"
               />
               <ProofPoint
                 icon={ShieldCheck}
-                title="Private by design"
+                title="PRIVATE BY DESIGN"
                 description="Your data stays yours. We don't sell or share your location."
+                color="bg-primary"
               />
               <ProofPoint
                 icon={Search}
-                title="Search & export"
+                title="SEARCH & EXPORT"
                 description="Find what you need fast and export anytime in CSV."
+                color="bg-accent"
               />
             </div>
           </div>
 
           <div className="relative min-h-[460px]">
-            <div className="border-primary absolute top-2 right-10 hidden h-24 w-52 rotate-[-26deg] border-t-4 lg:block" />
             <AutomationCard />
             <RecentActivityPreview />
           </div>
@@ -125,44 +129,47 @@ export default async function HomePage() {
 
       <section
         id="setup"
-        className="relative mx-auto mt-4 w-full max-w-[1392px] px-6 pb-20 lg:px-0 lg:pb-28"
+        className="border-foreground bg-secondary relative border-b-4"
       >
-        <div className="dark:bg-card overflow-hidden rounded-2xl border bg-white shadow-lg shadow-slate-950/5">
-          <div className="px-6 pt-12 pb-10 text-center sm:px-10">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-950 dark:text-white">
-              Simple setup. Automatic tracking.
+        <div className="border-foreground bg-background mx-auto w-full max-w-[1416px] border-x-4">
+          <div className="border-foreground bg-accent text-accent-foreground border-b-4 px-6 py-16 text-center sm:px-10">
+            <h2 className="text-4xl font-black tracking-tight uppercase sm:text-5xl">
+              SIMPLE SETUP. <br /> AUTOMATIC TRACKING.
             </h2>
-            <p className="text-muted-foreground mt-3 text-base">
-              Get connected in minutes and let your phone handle the rest.
+            <p className="bg-background text-foreground border-foreground mt-4 inline-block border-2 px-4 py-2 text-xl font-bold shadow-[4px_4px_0_0_var(--color-foreground)]">
+              GET CONNECTED IN MINUTES AND LET YOUR PHONE HANDLE THE REST.
             </p>
           </div>
 
-          <div className="grid gap-8 px-6 pb-12 sm:px-10 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:items-center">
+          <div className="border-foreground grid gap-0 border-b-4 lg:grid-cols-3">
             <SetupStep
               number="1"
               icon={Building2}
-              title="Create your workspace"
+              title="CREATE YOUR WORKSPACE"
               description="Add your office locations and invite teammates."
+              className="border-foreground bg-primary/20 border-b-4 p-10 lg:border-r-4 lg:border-b-0"
             />
-            <SetupArrow />
             <SetupStep
               number="2"
               icon={KeyRound}
-              title="Add your API key"
+              title="ADD YOUR API KEY"
               description="Use the key in your phone automation to send check-in and check-out events."
+              className="border-foreground bg-secondary/20 border-b-4 p-10 lg:border-r-4 lg:border-b-0"
             />
-            <SetupArrow />
             <SetupStep
               number="3"
               icon={CheckCircle2}
-              title="Start tracking"
+              title="START TRACKING"
               description="Arrive, leave, and we'll keep clean logs of your office time."
+              className="bg-accent/20 p-10"
             />
           </div>
 
-          <div className="grid border-t lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="grid lg:grid-cols-[0.8fr_1.2fr]">
             <LocationPreview />
-            <ClarityPreview />
+            <div className="border-foreground border-t-4 lg:border-t-0 lg:border-l-4">
+              <ClarityPreview />
+            </div>
           </div>
         </div>
       </section>
@@ -174,67 +181,70 @@ function MapLayer() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
       <div
-        className="absolute inset-y-0 right-0 w-[58%] opacity-55 dark:opacity-20"
+        className="absolute inset-y-0 right-0 w-full opacity-20 mix-blend-multiply lg:w-[60%] dark:mix-blend-screen"
         style={{
           backgroundImage:
-            'linear-gradient(16deg, transparent 0 47%, rgba(148,163,184,0.28) 48% 49%, transparent 50%), linear-gradient(94deg, transparent 0 46%, rgba(148,163,184,0.22) 47% 48%, transparent 49%), linear-gradient(130deg, transparent 0 48%, rgba(148,163,184,0.18) 49% 50%, transparent 51%)',
-          backgroundSize: '150px 150px, 115px 115px, 190px 190px'
+            'repeating-linear-gradient(45deg, var(--color-foreground) 0, var(--color-foreground) 2px, transparent 2px, transparent 14px)',
+          backgroundSize: '100% 100%'
         }}
       />
-      <div className="bg-primary ring-primary/10 dark:before:bg-background absolute top-14 right-[15%] h-8 w-8 rounded-full ring-[18px] before:absolute before:inset-2 before:rounded-full before:bg-white" />
-      <div className="dark:before:bg-background absolute right-7 bottom-24 h-8 w-8 rounded-full bg-emerald-500 ring-[18px] ring-emerald-500/12 before:absolute before:inset-2 before:rounded-full before:bg-white" />
-      <div className="border-primary absolute right-[7%] bottom-40 hidden h-28 w-56 rotate-45 border-b-4 lg:block" />
+      <div className="bg-primary border-foreground absolute top-14 right-[15%] hidden h-16 w-16 animate-[spin_10s_linear_infinite] border-4 shadow-[8px_8px_0_0_var(--color-foreground)] lg:block" />
+      <div className="bg-secondary border-foreground absolute right-7 bottom-24 hidden h-12 w-12 rotate-12 border-4 shadow-[6px_6px_0_0_var(--color-foreground)] lg:block" />
+      <div className="bg-accent border-foreground absolute top-40 right-[40%] hidden h-20 w-20 rounded-full border-4 shadow-[8px_8px_0_0_var(--color-foreground)] lg:block" />
     </div>
   )
 }
 
 function AutomationCard() {
   return (
-    <div className="dark:bg-card absolute top-6 left-0 z-10 w-[200px] rounded-xl border bg-white p-5 shadow-2xl shadow-slate-950/10 lg:left-3">
-      <div className="flex items-center gap-3">
-        <Phone className="size-3.5 text-slate-700 dark:text-slate-200" />
-        <h2 className="text-sm font-semibold">Phone automation</h2>
+    <div className="border-foreground bg-background absolute top-6 left-0 z-10 w-[240px] border-4 p-0 shadow-[8px_8px_0_0_var(--color-foreground)] lg:left-0">
+      <div className="border-foreground bg-secondary flex items-center gap-3 border-b-4 px-4 py-3">
+        <Phone className="text-secondary-foreground size-5 stroke-[3]" />
+        <h2 className="text-secondary-foreground text-sm font-black tracking-wider uppercase">
+          PHONE AUTOMATION
+        </h2>
       </div>
-      <p className="mt-3.5 text-xs leading-5 text-slate-500 dark:text-slate-400">
-        Use this API key in your automation (Shortcuts, Tasker, or similar).
-      </p>
-      <p className="mt-5 text-[10px] font-bold tracking-[0.12em] text-slate-400 uppercase">
-        Your API key
-      </p>
-      <div className="dark:bg-background mt-2.5 flex items-center justify-between rounded-lg border bg-slate-50 px-3 py-2.5 text-[10px] text-slate-700 dark:text-slate-300">
-        <span className="truncate">oh_live_8f3c6d9a9e2b4c1e</span>
-        <ClipboardCopy className="ml-2 size-3.5 shrink-0" />
-      </div>
-      <Link
-        href="/login"
-        className="text-primary mt-3 inline-flex items-center gap-1 text-[11px] font-medium"
-      >
-        Regenerate key
-        <ArrowRight className="size-3" />
-      </Link>
-      <div className="mt-5 border-t pt-5">
-        <p className="text-[10px] font-bold tracking-[0.12em] text-slate-500 uppercase">
-          Example workflow
+      <div className="p-5">
+        <p className="text-xs leading-5 font-bold">
+          USE THIS API KEY IN YOUR AUTOMATION (SHORTCUTS, TASKER, OR SIMILAR).
         </p>
-        <WorkflowStep
-          number="1"
-          title="Arrive at office"
-          detail="Run check-in request"
-        />
-        <WorkflowStep
-          number="2"
-          title="Leave office"
-          detail="Run check-out request"
-        />
-        <WorkflowStep number="3" title="Done" detail="We'll log the rest" />
+        <p className="text-primary mt-5 text-[10px] font-black tracking-widest uppercase">
+          YOUR API KEY
+        </p>
+        <div className="border-foreground bg-foreground text-background mt-2 flex items-center justify-between border-2 px-3 py-2.5 font-mono text-xs font-bold shadow-[4px_4px_0_0_var(--color-primary)]">
+          <span className="truncate">oh_live_8f3c6d9a9e2b4c1e</span>
+          <ClipboardCopy className="hover:text-primary ml-2 size-4 shrink-0 cursor-pointer transition-colors" />
+        </div>
+        <Link
+          href="/login"
+          className="hover:text-primary mt-4 inline-flex items-center gap-1 text-[11px] font-black uppercase decoration-2 underline-offset-4 hover:underline"
+        >
+          REGENERATE KEY
+          <ArrowRight className="size-4 stroke-[3]" />
+        </Link>
+        <div className="border-foreground mt-6 border-t-4 pt-5">
+          <p className="text-primary text-[10px] font-black tracking-widest uppercase">
+            EXAMPLE WORKFLOW
+          </p>
+          <WorkflowStep
+            number="1"
+            title="ARRIVE AT OFFICE"
+            detail="Run check-in request"
+          />
+          <WorkflowStep
+            number="2"
+            title="LEAVE OFFICE"
+            detail="Run check-out request"
+          />
+          <WorkflowStep number="3" title="DONE" detail="We'll log the rest" />
+        </div>
       </div>
-      <div className="mt-1" />
       <Link
         href="/login"
-        className="text-primary mt-4 inline-flex items-center gap-1 text-xs font-medium"
+        className="border-foreground bg-foreground text-background hover:bg-primary flex w-full items-center justify-between border-t-4 px-5 py-3 text-xs font-black uppercase transition-colors"
       >
-        View setup guide
-        <ArrowRight className="size-3.5" />
+        VIEW SETUP GUIDE
+        <ArrowRight className="size-4 stroke-[3]" />
       </Link>
     </div>
   )
@@ -242,56 +252,84 @@ function AutomationCard() {
 
 function RecentActivityPreview() {
   return (
-    <div className="dark:bg-card absolute top-6 right-0 w-full max-w-[480px] rounded-xl border bg-white shadow-2xl shadow-slate-950/8 lg:right-[60px]">
-      <div className="flex items-center justify-between border-b px-5 py-4">
-        <h2 className="text-sm font-bold">Recent activity</h2>
-        <Link href="/login" className="text-primary text-xs font-medium">
-          View all
+    <div className="border-foreground bg-background absolute top-20 right-0 w-full max-w-[480px] border-4 p-0 shadow-[12px_12px_0_0_var(--color-foreground)] lg:right-[20px]">
+      <div className="border-foreground bg-primary flex items-center justify-between border-b-4 px-5 py-4">
+        <h2 className="text-primary-foreground text-sm font-black tracking-wider uppercase">
+          RECENT ACTIVITY
+        </h2>
+        <Link
+          href="/login"
+          className="bg-background text-foreground border-foreground hover:bg-secondary border-2 px-3 py-1 text-[10px] font-black uppercase shadow-[2px_2px_0_0_var(--color-foreground)] transition-colors"
+        >
+          VIEW ALL
         </Link>
       </div>
 
-      <div className="grid grid-cols-4 gap-0 border-b px-5 py-4">
-        <ActivityMetric label="Today" value="2h 47m" note="In office" good />
-        <ActivityMetric label="Check-ins" value="2" note="Today" />
-        <ActivityMetric label="Last check-in" value="9:01 AM" note="Today" />
-        <ActivityMetric label="Status" value="In office" note="" good dot />
+      <div className="border-foreground grid grid-cols-2 gap-0 border-b-4 sm:grid-cols-4">
+        <ActivityMetric
+          label="TODAY"
+          value="2H 47M"
+          note="IN OFFICE"
+          color="bg-secondary"
+        />
+        <ActivityMetric
+          label="CHECK-INS"
+          value="2"
+          note="TODAY"
+          color="bg-background"
+        />
+        <ActivityMetric
+          label="LAST"
+          value="9:01 AM"
+          note="TODAY"
+          color="bg-background"
+        />
+        <ActivityMetric
+          label="STATUS"
+          value="IN"
+          note="OFFICE"
+          dot
+          color="bg-accent text-accent-foreground"
+        />
       </div>
 
-      <div className="overflow-hidden px-5 pb-4">
-        <div className="grid grid-cols-[1fr_1fr_1.3fr_0.8fr] border-b py-3 text-xs font-medium text-slate-500 dark:text-slate-400">
-          <span>Time</span>
-          <span>Type</span>
-          <span>Location</span>
-          <span className="text-right">Duration</span>
+      <div className="overflow-hidden p-0">
+        <div className="border-foreground bg-foreground text-background grid grid-cols-[1fr_1fr_1.3fr_0.8fr] border-b-4 px-5 py-3 text-[10px] font-black tracking-widest uppercase">
+          <span>TIME</span>
+          <span>TYPE</span>
+          <span>LOCATION</span>
+          <span className="text-right">DURATION</span>
         </div>
-        {recentRows.map(row => (
-          <div
-            key={`${row.time}-${row.type}`}
-            className="grid grid-cols-[1fr_1fr_1.3fr_0.8fr] items-center border-b py-2.5 text-xs last:border-b-0"
-          >
-            <span>{row.time}</span>
-            <span className="flex items-center gap-2">
-              <span
-                className={cn(
-                  'flex size-5 items-center justify-center rounded-full',
-                  row.active
-                    ? 'bg-emerald-100 text-emerald-600'
-                    : 'dark:bg-muted bg-slate-100 text-slate-500'
-                )}
-              >
-                <ArrowRight className="size-2.5" />
+        <div className="px-5">
+          {recentRows.map((row, i) => (
+            <div
+              key={`${row.time}-${row.type}-${i}`}
+              className="border-foreground/30 grid grid-cols-[1fr_1fr_1.3fr_0.8fr] items-center border-b-2 border-dashed py-3 text-xs font-bold uppercase last:border-b-0"
+            >
+              <span>{row.time}</span>
+              <span className="flex items-center gap-2">
+                <span
+                  className={cn(
+                    'border-foreground flex size-5 items-center justify-center border-2',
+                    row.active
+                      ? 'bg-primary text-primary-foreground shadow-[2px_2px_0_0_var(--color-foreground)]'
+                      : 'bg-muted text-muted-foreground'
+                  )}
+                >
+                  <ArrowRight className="size-3 stroke-[3]" />
+                </span>
+                {row.type}
               </span>
-              {row.type}
-            </span>
-            <span>{row.location}</span>
-            <span className="text-right text-slate-600 dark:text-slate-300">
-              {row.duration}
-            </span>
-          </div>
-        ))}
-        <p className="text-muted-foreground mt-3 text-[11px]">
-          All times shown in your local time zone.
-        </p>
+              <span>{row.location}</span>
+              <span className="text-right">{row.duration}</span>
+            </div>
+          ))}
+        </div>
+        <div className="border-foreground bg-muted border-t-4 px-5 py-2">
+          <p className="text-[10px] font-bold tracking-wider uppercase">
+            ALL TIMES SHOWN IN YOUR LOCAL TIME ZONE.
+          </p>
+        </div>
       </div>
     </div>
   )
@@ -300,22 +338,27 @@ function RecentActivityPreview() {
 function ProofPoint({
   icon: Icon,
   title,
-  description
+  description,
+  color
 }: {
   icon: FC<{ className?: string }>
   title: string
   description: string
+  color: string
 }) {
   return (
-    <div className="grid grid-cols-[28px_1fr] gap-3.5">
-      <span className="flex size-7 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950/30">
-        <Icon className="size-4 text-emerald-600" />
+    <div className="border-foreground bg-background flex flex-col gap-4 border-4 p-4 shadow-[4px_4px_0_0_var(--color-foreground)] transition-transform hover:-translate-y-1 hover:shadow-[6px_6px_0_0_var(--color-foreground)]">
+      <span
+        className={cn(
+          'border-foreground flex size-12 items-center justify-center border-4 shadow-[4px_4px_0_0_var(--color-foreground)]',
+          color
+        )}
+      >
+        <Icon className="size-6 stroke-[3]" />
       </span>
       <div>
-        <h3 className="text-sm font-semibold">{title}</h3>
-        <p className="text-muted-foreground mt-1.5 text-xs leading-5 sm:text-[13px] sm:leading-[1.6]">
-          {description}
-        </p>
+        <h3 className="text-sm font-black tracking-wider uppercase">{title}</h3>
+        <p className="mt-2 text-xs leading-relaxed font-bold">{description}</p>
       </div>
     </div>
   )
@@ -325,31 +368,33 @@ function ActivityMetric({
   label,
   value,
   note,
-  good = false,
+  color,
   dot = false
 }: {
   label: string
   value: string
   note: string
-  good?: boolean
+  color: string
   dot?: boolean
 }) {
   return (
-    <div className="border-r px-3.5 first:pl-0 last:border-r-0 last:pr-0">
-      <p className="text-[10px] font-semibold tracking-[0.1em] text-slate-400 uppercase dark:text-slate-500">
+    <div
+      className={cn(
+        'border-foreground border-r-4 border-b-4 p-3 last:border-r-0 sm:border-b-0',
+        color
+      )}
+    >
+      <p className="text-[10px] font-black tracking-widest uppercase">
         {label}
       </p>
-      <p
-        className={cn(
-          'mt-1.5 flex items-center gap-2 text-lg font-bold',
-          good ? 'text-emerald-600' : 'text-slate-950 dark:text-white'
-        )}
-      >
-        {dot ? <span className="size-2 rounded-full bg-emerald-500" /> : null}
+      <p className="mt-2 flex items-center gap-2 text-xl font-black uppercase">
+        {dot ? (
+          <span className="border-foreground bg-primary size-3 animate-pulse border-2" />
+        ) : null}
         {value}
       </p>
       {note ? (
-        <p className="text-muted-foreground text-[11px]">{note}</p>
+        <p className="mt-1 text-[10px] font-bold uppercase">{note}</p>
       ) : null}
     </div>
   )
@@ -365,13 +410,15 @@ function WorkflowStep({
   detail: string
 }) {
   return (
-    <div className="mt-3 grid grid-cols-[20px_1fr] gap-2">
-      <span className="flex size-[18px] items-center justify-center rounded-full border text-[10px] text-slate-500">
+    <div className="mt-4 flex items-start gap-3">
+      <span className="border-foreground bg-foreground text-background flex size-6 shrink-0 items-center justify-center border-2 text-xs font-black">
         {number}
       </span>
       <div>
-        <p className="text-[11px] font-semibold">{title}</p>
-        <p className="text-muted-foreground text-[11px]">{detail}</p>
+        <p className="text-[11px] font-black tracking-wider uppercase">
+          {title}
+        </p>
+        <p className="mt-0.5 text-[11px] font-bold">{detail}</p>
       </div>
     </div>
   )
@@ -381,65 +428,63 @@ function SetupStep({
   number,
   icon: Icon,
   title,
-  description
+  description,
+  className
 }: {
   number: string
   icon: FC<{ className?: string }>
   title: string
   description: string
+  className?: string
 }) {
   return (
-    <div className="grid grid-cols-[56px_1fr] gap-5">
-      <div className="relative">
-        <span className="bg-primary absolute -top-1 -right-1 flex size-5 items-center justify-center rounded-full text-xs font-bold text-white">
+    <div className={cn('flex flex-col gap-6', className)}>
+      <div className="relative inline-flex">
+        <span className="border-foreground bg-foreground text-background absolute -top-3 -right-3 z-10 flex size-8 items-center justify-center border-2 text-sm font-black shadow-[2px_2px_0_0_var(--color-primary)]">
           {number}
         </span>
-        <span className="bg-primary/8 text-primary flex size-14 items-center justify-center rounded-xl">
-          <Icon className="size-6" />
+        <span className="border-foreground bg-background flex size-16 items-center justify-center border-4 shadow-[4px_4px_0_0_var(--color-foreground)]">
+          <Icon className="size-8 stroke-[3]" />
         </span>
       </div>
       <div>
-        <h3 className="text-[15px] font-bold">{title}</h3>
-        <p className="text-muted-foreground mt-2.5 text-[13px] leading-[1.6]">
-          {description}
-        </p>
+        <h3 className="text-xl font-black tracking-wider uppercase">{title}</h3>
+        <p className="mt-3 text-sm leading-relaxed font-bold">{description}</p>
       </div>
-    </div>
-  )
-}
-
-function SetupArrow() {
-  return (
-    <div className="text-primary hidden items-center justify-center lg:flex">
-      <ArrowRight className="size-10 stroke-1" />
     </div>
   )
 }
 
 function LocationPreview() {
   return (
-    <div className="dark:bg-background/40 relative min-h-[320px] overflow-hidden border-r bg-slate-50/70 p-10">
+    <div className="bg-primary/10 relative min-h-[320px] overflow-hidden p-10">
       <div
-        className="absolute inset-0 opacity-60 dark:opacity-20"
+        className="absolute inset-0 opacity-20 mix-blend-multiply dark:mix-blend-screen"
         style={{
           backgroundImage:
-            'linear-gradient(23deg, transparent 0 48%, rgba(148,163,184,0.25) 49% 50%, transparent 51%), linear-gradient(103deg, transparent 0 48%, rgba(148,163,184,0.18) 49% 50%, transparent 51%)',
-          backgroundSize: '120px 120px, 170px 170px'
+            'radial-gradient(circle at 2px 2px, var(--color-foreground) 1px, transparent 0)',
+          backgroundSize: '24px 24px'
         }}
       />
-      <div className="dark:before:bg-background absolute top-24 right-24 size-8 rounded-full bg-emerald-500 ring-[18px] ring-emerald-500/12 before:absolute before:inset-2 before:rounded-full before:bg-white" />
-      <div className="dark:bg-card relative mt-10 max-w-[300px] rounded-xl border bg-white p-5 shadow-lg shadow-slate-950/6">
-        <h3 className="text-[15px] font-bold">Office locations</h3>
-        <LocationRow
-          color="bg-emerald-500"
-          title="Main Office"
-          detail="123 Market St, San Francisco, CA"
-        />
-        <LocationRow
-          color="bg-primary"
-          title="Warehouse"
-          detail="880 Industrial Rd, San Francisco, CA"
-        />
+
+      <div className="border-foreground bg-background relative mt-8 max-w-[340px] border-4 p-0 shadow-[8px_8px_0_0_var(--color-foreground)] transition-transform hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[12px_12px_0_0_var(--color-foreground)]">
+        <div className="border-foreground bg-accent border-b-4 px-5 py-3">
+          <h3 className="text-accent-foreground text-[15px] font-black tracking-widest uppercase">
+            OFFICE LOCATIONS
+          </h3>
+        </div>
+        <div className="flex flex-col gap-4 p-5">
+          <LocationRow
+            color="bg-primary"
+            title="MAIN OFFICE"
+            detail="123 MARKET ST, SAN FRANCISCO, CA"
+          />
+          <LocationRow
+            color="bg-secondary"
+            title="WAREHOUSE"
+            detail="880 INDUSTRIAL RD, SAN FRANCISCO, CA"
+          />
+        </div>
       </div>
     </div>
   )
@@ -455,11 +500,13 @@ function LocationRow({
   detail: string
 }) {
   return (
-    <div className="mt-4 flex gap-3.5 border-t pt-4">
-      <span className={cn('mt-1 size-2 rounded-full', color)} />
+    <div className="border-foreground bg-background flex gap-4 border-4 p-3 shadow-[4px_4px_0_0_var(--color-foreground)]">
+      <span
+        className={cn('border-foreground mt-1 size-4 shrink-0 border-2', color)}
+      />
       <div>
-        <p className="text-sm font-bold">{title}</p>
-        <p className="text-muted-foreground text-xs">{detail}</p>
+        <p className="text-sm font-black tracking-wider uppercase">{title}</p>
+        <p className="mt-1 text-[10px] font-bold uppercase">{detail}</p>
       </div>
     </div>
   )
@@ -467,68 +514,89 @@ function LocationRow({
 
 function ClarityPreview() {
   return (
-    <div className="p-10">
-      <h2 className="text-2xl font-bold tracking-tight text-slate-950 dark:text-white">
-        Built for clarity and accountability.
+    <div className="bg-background h-full p-8 sm:p-12">
+      <h2 className="text-3xl font-black tracking-tight uppercase sm:text-4xl">
+        BUILT FOR CLARITY <br /> & ACCOUNTABILITY.
       </h2>
-      <p className="text-muted-foreground mt-3 text-[15px] leading-relaxed">
+      <p className="border-primary mt-4 border-l-4 pl-4 text-lg font-bold">
         See who's in the office, who's out, and for how long.
       </p>
-      <div className="mt-8 grid gap-5 lg:grid-cols-[1fr_230px]">
-        <div className="dark:bg-background rounded-xl border bg-white">
-          <div className="flex items-center justify-between gap-3 border-b p-3">
-            <div className="flex h-9 max-w-[260px] flex-1 items-center gap-2 rounded-md border px-3 text-sm text-slate-500">
-              <Search className="size-4" />
-              Search team members...
+
+      <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_260px]">
+        <div className="border-foreground bg-background border-4 shadow-[8px_8px_0_0_var(--color-foreground)]">
+          <div className="border-foreground bg-secondary/30 flex flex-col justify-between gap-4 border-b-4 p-4 sm:flex-row sm:items-center">
+            <div className="border-foreground bg-background flex h-12 flex-1 items-center gap-3 border-4 px-4 text-sm font-bold shadow-[4px_4px_0_0_var(--color-foreground)]">
+              <Search className="size-5 stroke-[3]" />
+              SEARCH TEAM MEMBERS...
             </div>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="icon-sm">
-                <ArrowRight className="size-4 rotate-180" />
+            <div className="flex items-center gap-3">
+              <Button
+                variant="outline"
+                size="icon"
+                className="border-foreground h-12 w-12 rounded-none border-4 shadow-[4px_4px_0_0_var(--color-foreground)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none active:translate-x-1 active:translate-y-1 active:shadow-none"
+              >
+                <ArrowRight className="size-5 rotate-180 stroke-[3]" />
               </Button>
-              <Button variant="outline" size="sm">
-                Today
+              <Button
+                variant="outline"
+                className="border-foreground h-12 rounded-none border-4 px-6 font-black uppercase shadow-[4px_4px_0_0_var(--color-foreground)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none active:translate-x-1 active:translate-y-1 active:shadow-none"
+              >
+                TODAY
               </Button>
-              <Button variant="outline" size="icon-sm">
-                <CalendarDays className="size-4" />
+              <Button
+                variant="outline"
+                size="icon"
+                className="border-foreground h-12 w-12 rounded-none border-4 shadow-[4px_4px_0_0_var(--color-foreground)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none active:translate-x-1 active:translate-y-1 active:shadow-none"
+              >
+                <CalendarDays className="size-5 stroke-[3]" />
               </Button>
             </div>
           </div>
-          <div className="grid grid-cols-5 border-b px-4 py-3.5 text-xs font-medium text-slate-400">
-            <span>Member</span>
-            <span>Status</span>
-            <span>Since</span>
-            <span>Today</span>
-            <span>This week</span>
+
+          <div className="overflow-x-auto">
+            <div className="border-foreground bg-foreground text-background grid min-w-[600px] grid-cols-5 border-b-4 px-5 py-4 text-[10px] font-black tracking-widest uppercase">
+              <span>MEMBER</span>
+              <span>STATUS</span>
+              <span>SINCE</span>
+              <span>TODAY</span>
+              <span>THIS WEEK</span>
+            </div>
+            <div className="min-w-[600px]">
+              <MemberRow
+                name="ALEX RIVERA"
+                status="IN OFFICE"
+                since="9:01 AM"
+                today="2H 47M"
+                week="12H 31M"
+              />
+              <MemberRow
+                name="MAYA CHEN"
+                status="OUT"
+                since="12:05 PM"
+                today="3H 04M"
+                week="18H 10M"
+                muted
+              />
+            </div>
           </div>
-          <MemberRow
-            name="Alex Rivera"
-            status="In office"
-            since="9:01 AM"
-            today="2h 47m"
-            week="12h 31m"
-          />
-          <MemberRow
-            name="Maya Chen"
-            status="Out"
-            since="12:05 PM"
-            today="3h 04m"
-            week="18h 10m"
-            muted
-          />
         </div>
 
-        <div className="dark:bg-background rounded-xl border bg-white p-5">
-          <h3 className="text-sm font-bold">Live timeline</h3>
-          <div className="mt-5 space-y-5 border-l pl-5">
+        <div className="border-foreground bg-background border-4 p-0 shadow-[8px_8px_0_0_var(--color-foreground)]">
+          <div className="border-foreground bg-primary border-b-4 px-5 py-3">
+            <h3 className="text-primary-foreground text-sm font-black tracking-widest uppercase">
+              LIVE TIMELINE
+            </h3>
+          </div>
+          <div className="space-y-6 p-5">
             <TimelineItem
               time="9:01 AM"
-              name="Alex Rivera"
-              note="Checked in Main Office"
+              name="ALEX RIVERA"
+              note="CHECKED IN MAIN OFFICE"
             />
             <TimelineItem
               time="12:05 PM"
-              name="Maya Chen"
-              note="Checked out Main Office"
+              name="MAYA CHEN"
+              note="CHECKED OUT MAIN OFFICE"
               muted
             />
           </div>
@@ -554,12 +622,14 @@ function MemberRow({
   muted?: boolean
 }) {
   return (
-    <div className="grid grid-cols-5 px-4 py-4.5 text-sm">
-      <span className="font-semibold">{name}</span>
+    <div className="border-foreground/30 grid grid-cols-5 items-center border-b-2 border-dashed px-5 py-4 text-xs font-bold last:border-b-0">
+      <span className="font-black">{name}</span>
       <span
         className={cn(
-          'font-medium',
-          muted ? 'text-slate-500' : 'text-emerald-600'
+          'border-foreground inline-block w-max border-2 px-2 py-1 text-[10px] font-black uppercase',
+          muted
+            ? 'bg-muted'
+            : 'bg-secondary shadow-[2px_2px_0_0_var(--color-foreground)]'
         )}
       >
         {status}
@@ -583,18 +653,24 @@ function TimelineItem({
   muted?: boolean
 }) {
   return (
-    <div className="relative">
+    <div className="relative pl-6">
       <span
         className={cn(
-          'absolute top-1 -left-[21px] size-2 rounded-full',
-          muted ? 'bg-slate-400' : 'bg-emerald-500'
+          'border-foreground absolute top-1 left-0 size-3 border-2',
+          muted
+            ? 'bg-muted'
+            : 'bg-accent shadow-[2px_2px_0_0_var(--color-foreground)]'
         )}
       />
-      <div className="grid grid-cols-[60px_1fr] gap-3.5 text-sm">
-        <span>{time}</span>
+      <div className="flex flex-col gap-1 text-xs">
+        <span className="bg-foreground text-background w-max px-1 font-mono font-black">
+          {time}
+        </span>
         <div>
-          <p className="font-semibold">{name}</p>
-          <p className="text-muted-foreground text-xs">{note}</p>
+          <p className="font-black tracking-wider uppercase">{name}</p>
+          <p className="border-foreground mt-1 border-l-2 pl-2 text-[10px] font-bold uppercase">
+            {note}
+          </p>
         </div>
       </div>
     </div>

@@ -57,9 +57,7 @@ const columns: ColumnDef<TrackingLog>[] = [
     header: 'Source',
     enableSorting: false,
     cell: ({ row }) => (
-      <Badge
-        variant="outline"
-      >
+      <Badge variant="outline">
         {row.original.source === 'api' ? 'API' : 'Manual'}
       </Badge>
     )
