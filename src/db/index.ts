@@ -11,14 +11,26 @@ const globalForDb = globalThis as unknown as {
 }
 
 // Prefer the cached client (dev) and fall back to creating a new one.
-// `max: 1` limits the pool size, and `prepare: false` disables prepared
-// statements for compatibility with environments where prepared statements
-// can be problematic.
+//
+// The extra options make the pool resilient against Neon's serverless
+// behaviour: Neon auto-suspends idle compute (~5 min) and its pooler drops
+// idle server-side connections. Without recycling, a long-lived socket goes
+// stale and the next query fails with `CONNECT_TIMEOUT`. To avoid that:
+// - `idle_timeout` closes idle connections before Neon can drop them, so we
+//   never reuse a dead socket.
+// - `max_lifetime` recycles connections periodically as a backstop.
+// - `connect_timeout` gives new connections enough time to survive a Neon
+//   compute cold start instead of failing fast.
+// `max: 1` keeps the pool small for serverless, and `prepare: false` is
+// required for Neon's pooled (PgBouncer) connection string.
 const client =
   globalForDb.client ??
   postgres(env.DATABASE_URL, {
     max: 1,
-    prepare: false
+    prepare: false,
+    idle_timeout: 30, // seconds an idle connection is kept before closing
+    max_lifetime: 60 * 5, // recycle a connection after 5 minutes
+    connect_timeout: 60 // seconds to wait for a connection (Neon cold start)
   })
 
 // Only cache the client outside production to avoid unexpected cross-request
