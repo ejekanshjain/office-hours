@@ -95,7 +95,11 @@ export const auth = betterAuth({
     }),
     admin(),
     lastLoginMethod(),
-    apiKey()
+    apiKey({
+      rateLimit: {
+        enabled: false
+      }
+    })
   ],
   hooks: {
     before: createAuthMiddleware(async ctx => {
