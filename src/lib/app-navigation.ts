@@ -1,9 +1,11 @@
 import {
+  Blocks,
   Clock,
   History,
   KeyRound,
   LayoutDashboard,
-  UserCog
+  UserCog,
+  Users
 } from 'lucide-react'
 import type { SidebarNavGroup } from '~/components/navigation-sidebar'
 
@@ -36,6 +38,31 @@ export const getAppNavigation = (): SidebarNavGroup[] => [
         title: 'Profile',
         url: '/profile',
         icon: UserCog
+      }
+    ]
+  }
+]
+
+export const getAdminNavigation = (): SidebarNavGroup[] => [
+  {
+    label: 'Admin',
+    items: [
+      {
+        title: 'Dashboard',
+        url: '/admin',
+        icon: LayoutDashboard,
+        exact: true
+      },
+      {
+        title: 'Users',
+        url: '/admin/users',
+        icon: Users
+      },
+      {
+        title: 'App workspace',
+        url: '/app',
+        icon: Blocks,
+        exact: true
       }
     ]
   }
