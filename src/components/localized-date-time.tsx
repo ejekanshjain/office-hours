@@ -23,11 +23,11 @@ function subscribe() {
   return () => {}
 }
 
-function getBrowserLocale(): Intl.LocalesArgument {
-  return typeof navigator !== 'undefined' ? navigator.languages : 'en-US'
+function getBrowserLocale(): string {
+  return typeof navigator !== 'undefined' ? navigator.language : 'en-US'
 }
 
-function getServerLocale(): Intl.LocalesArgument {
+function getServerLocale(): string {
   return 'en-US'
 }
 

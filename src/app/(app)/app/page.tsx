@@ -150,7 +150,7 @@ export default async function Page() {
                       <TableCell>{log.tag || '—'}</TableCell>
                       <TableCell className="text-muted-foreground text-right">
                         <LocalizedDateTime
-                          date={log.timestamp}
+                          date={log.timestamp.toISOString()}
                           options={{ time: true }}
                         />
                       </TableCell>

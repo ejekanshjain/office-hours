@@ -159,7 +159,7 @@ export default async function AdminPage() {
                     </TableCell>
                     <TableCell className="text-muted-foreground text-right">
                       <LocalizedDateTime
-                        date={user.createdAt}
+                        date={user.createdAt.toISOString()}
                         options={{ time: true }}
                       />
                     </TableCell>
