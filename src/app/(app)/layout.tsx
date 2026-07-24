@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { NuqsAdapter } from 'nuqs/adapters/react'
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { DashboardHeader } from '~/components/dashboard-header'
 import { SidebarInset, SidebarProvider } from '~/components/ui/sidebar'
 import { TooltipProvider } from '~/components/ui/tooltip'
